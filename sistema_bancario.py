@@ -75,12 +75,14 @@ def depositar(saldo, valor, depositos):
     return saldo, depositos
 
 def sacar(valor, saldo, saques, numero_saques, limite, LIMITE_SAQUES):
+    #verificações
     excedeu_saldo = valor > saldo
         
     excedeu_limite = valor > limite
         
     excedeu_saques = numero_saques>=LIMITE_SAQUES
-        
+    #
+    
     if excedeu_saldo:
         print("@ Saldo insuficiente! @")
             
@@ -103,8 +105,10 @@ def sacar(valor, saldo, saques, numero_saques, limite, LIMITE_SAQUES):
 def exibir_extrato(saldo, depositos, saques, /, *, extrato):
     if depositos:
         extrato+= f"Depósitos:\n{depositos}\n"
+        
     if saques:
         extrato+= f"Saques:\n{saques}\n"
+        
     print("========================= MENU =========================\n")
     print("Não foram realizados movimentações." if not extrato else extrato)
     print(f"Saldo: R$ {saldo:.2f}")
@@ -113,7 +117,7 @@ def criar_usuario(usuarios):
     cpf = input("Informe o CPF (somente número): ")
     usuario = filtrar_usuario(cpf, usuarios)
     
-    if usuario:
+    if usuario:#se o usuário já existir, não será criado um novo
         print("\n@ Ja´existe usuário com esse CPF! @")
         return
     
@@ -125,6 +129,7 @@ def criar_usuario(usuarios):
     
     print("--- Usuário criado com sucesso! ---")
 
+#verificar se o usuário já existe
 def filtrar_usuario(cpf, usuarios):
     usuarios_filtrados = [usuario for usuario in usuarios if usuario["cpf"] == cpf]
     return usuarios_filtrados[0] if usuarios_filtrados else None
@@ -132,7 +137,7 @@ def filtrar_usuario(cpf, usuarios):
 def criar_conta(agencia, numero_conta, usuarios):
     cpf = input("Informe o CPF (somente número): ")
     usuario = filtrar_usuario(cpf, usuarios)
-    print(numero_conta)
+    
     if usuario:#se usuário existir, a conta será criada
         print("\n--- Conta criada com sucesso! ---")
         return {"agencia":agencia, "numero_conta": numero_conta, "usuario":usuario}
@@ -140,6 +145,7 @@ def criar_conta(agencia, numero_conta, usuarios):
     print("\n@ Usuário não encontrado, fluxo de criação de conta encerrado! @")
     #retorna None caso usuário não exista
     
+#listar todas as contas criadas
 def listar_contas(contas):
     for conta in contas:
         linha = f"""\t
